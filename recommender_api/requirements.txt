@@ -1,4 +1,10 @@
-fastapi
-uvicorn[standard]
-pymongo
-python-dotenv
+Flask>=2.0
+pymongo>=3.11
+python-dotenv>=0.15
+
+# Testing & Coverage
+pytest>=7.0
+pytest-cov>=3.0
+
+# Mock MongoDB for tests
+mongomock>=3.22
