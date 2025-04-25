@@ -134,15 +134,23 @@ def filter(sortBy,timeCook,totalTime,prepTime,ready,ingredientsUsed,haveSome):
     for idnum,recipe in recipeList.items:
         ingredientNames = []
         for ingredient in recipe["ingredients"]:
-            ingredientNames.append(recipe["ingredients"]["name"])
+            ingredientNames.append(ingredient["name"])
         if (haveSome == False):
                 potentialRecipeIDs.append(idnum)
-                potRecIngredientRatio.append(idnum:{"total":ingredientNames.size,"present":0,"ratio":0})
+                potRecIngredientRatio[idnum] = {
+                    "total": len(ingredientNames),
+                    "present": 0,
+                    "ratio": 0
+                } 
         for ingredient in ingredientsList:
             if ingredient["name"] in ingredientNames:
                 if idnum not in potentialRecipeIDs:
                     potentialRecipeIDs.append(idnum)
-                    potRecIngredientRatio.append(idnum:{"total":ingredientNames.size,"present":1,"ratio":0})
+                    potRecIngredientRatio[idnum] = {
+                        "total": len(ingredientNames),
+                        "present": 1,
+                        "ratio": 0
+                    } 
                     potRecIngredientRatio[idnum]["ratio"] = potRecIngredientRatio[idnum]["present"]/potRecIngredientRatio[idnum]["total"]
                 else:
                     potRecIngredientRatio[idnum]["present"] = potRecIngredientRatio[idnum]["present"]+1
@@ -170,16 +178,13 @@ def filter(sortBy,timeCook,totalTime,prepTime,ready,ingredientsUsed,haveSome):
         return recipeList[n]["name"]
     def sortPercent(n):
         return potRecIngredientRatio[n]["ratio"]
-    def sortPrice(n):
-
-
-
-    if (sortBy == "alpha"):
-        potentialRecipeIDs.sort(key=sortAlpha)
-    elif (sortBy == "price"):
-        potentialRecipeIDs.sort(key=sortPrice)
-    else:
-        potentialRecipeIDs.sort(key=sortPercent)
+    def sortPrice(n): 
+        if (sortBy == "alpha"):
+            potentialRecipeIDs.sort(key=sortAlpha)
+        elif (sortBy == "price"):
+            potentialRecipeIDs.sort(key=sortPrice)
+        else:
+            potentialRecipeIDs.sort(key=sortPercent)
 
     # TODO sort dict
     # TODO: sort by price, alphabetical, percent ingredients
