@@ -57,4 +57,4 @@ class ShoppingList:
     recipe_id: str
     recipe_name: str
     missing_ingredients: List[ShoppingListItem]
-    total_estimated_price: Optional[float] = None
+    total_estimated_price: Optional[float] = None 
