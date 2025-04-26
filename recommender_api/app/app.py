@@ -4,6 +4,7 @@ import os
 from flask import Flask, request, jsonify, abort
 import app.db as db
 from app.models import RecipeFilterParams
+from app.recommend import filter
 
 app = Flask(__name__, static_folder='static')
 
@@ -109,69 +110,3 @@ def create_app():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)
-
-
-#
-# The filter function and its imports remain unchanged:
-#
-
-from app.db import recipe_collection, ingredients_collection, get_recipes, get_ingredients
-from app.models import RecipeFilterParams
-
-def filter(sortBy, timeCook, totalTime, prepTime, ready, ingredientsUsed, haveSome):
-    ingredientsList = ingredients_collection.get()
-    recipeList = recipe_collection.get()
-    potentialRecipeIDs = []
-    potRecIngredientRatio = {}  # structure is _id:{"total":0,"present":0,"ratio":0}
-
-    # DONE add filtering for *specific ingredients*, cook time
-    # TODO add price finding feature
-    # DONE mod filter to include 0% recipes
-    for idnum, recipe in recipeList.items():
-        ingredientNames = [ing["name"] for ing in recipe["ingredients"]]
-
-        if not haveSome:
-            potentialRecipeIDs.append(idnum)
-            potRecIngredientRatio[idnum] = {"total": len(ingredientNames), "present": 0, "ratio": 0}
-
-        for ing in ingredientsList:
-            if ing["name"] in ingredientNames:
-                if idnum not in potentialRecipeIDs:
-                    potentialRecipeIDs.append(idnum)
-                    potRecIngredientRatio[idnum] = {
-                        "total": len(ingredientNames),
-                        "present": 1,
-                        "ratio": 1 / len(ingredientNames),
-                    }
-                else:
-                    potRecIngredientRatio[idnum]["present"] += 1
-                    potRecIngredientRatio[idnum]["ratio"] = (
-                        potRecIngredientRatio[idnum]["present"]
-                        / potRecIngredientRatio[idnum]["total"]
-                    )
-
-        if ingredientsUsed:
-            if not any(i in ingredientNames for i in ingredientsUsed):
-                potentialRecipeIDs.remove(idnum)
-
-        if timeCook > 0 and recipe.get("cookTime", 0) > timeCook:
-            potentialRecipeIDs.remove(idnum)
-        if totalTime > 0 and recipe.get("cookTime", 0) > totalTime:
-            potentialRecipeIDs.remove(idnum)
-        if prepTime > 0 and recipe.get("cookTime", 0) > prepTime:
-            potentialRecipeIDs.remove(idnum)
-
-    def sortAlpha(n):
-        return recipeList[n]["name"]
-
-    def sortPercent(n):
-        return potRecIngredientRatio[n]["ratio"]
-
-    if sortBy == "alpha":
-        potentialRecipeIDs.sort(key=sortAlpha)
-    elif sortBy == "price":
-        potentialRecipeIDs.sort(key=lambda n: potRecIngredientRatio[n].get("ratio", 0))
-    else:
-        potentialRecipeIDs.sort(key=sortPercent)
-
-    return potentialRecipeIDs
