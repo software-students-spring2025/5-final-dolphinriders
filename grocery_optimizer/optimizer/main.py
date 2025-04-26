@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 
 # Get the recipe service URL from environment variables
-RECIPE_SERVICE_URL = os.getenv('RECIPE_SERVICE_URL', 'http://recipe-service:5000')
+RECIPE_SERVICE_URL = 'http://localhost:5000'
 
 @app.route('/')
 def index():
