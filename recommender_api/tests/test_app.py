@@ -108,4 +108,4 @@ def test_generate_shopping_list_success(monkeypatch, client):
 def test_generate_shopping_list_not_found(monkeypatch, client):
     monkeypatch.setattr('app.db.get_recipe_by_id', lambda rid: None)
     rv = client.get('/recipe/999/shopping-list')
-    assert rv.status_code == 404
+    assert rv.status_code == 404 
