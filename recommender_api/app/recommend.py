@@ -1,10 +1,18 @@
 from app.db import recipe_collection, ingredients_collection, get_recipes, get_ingredients
 from app.models import RecipeFilterParams
 
-def filter(sortBy,timeCook,totalTime,prepTime,ready,ingredientsUsed,haveSome):
+def filter(params,user_ingredients):
+    sortBy = params.sortBy
+    timeCook=params.timeCook
+    totalTime=params.totalTime
+    prepTime=params.prepTime
+    ready=params.ready
+    ingredientsUsed=params.ingredientsUsed
+    haveSome=params.haveSome # unpack params
+
     ingredientsCursor = ingredients_collection.find() # .find returns a cursor of all items
     ingredientsList = [x for x in ingredients_collection.find()] # iterate through cursor to get all ingredients
-    ingredientsIHave = [x["name"] for x in ingredientsCursor if x["haveSome"]] # same but for ingredients we have some of
+    ingredientsIHave = user_ingredients # same but for ingredients we have some of
     ingredientsCursor = ingredients_collection.find()
     recipeCursor = recipe_collection.get()
     recipeList = {x._id:{name:x.name,ingredients:x.ingredients,instructions:x.instructions,cookTime:x.cooktime,prepTime:x.prepTime,totalTime:x.totalTime} for x in recipeCursor}
@@ -24,12 +32,12 @@ def filter(sortBy,timeCook,totalTime,prepTime,ready,ingredientsUsed,haveSome):
             
         if (haveSome == False):
                 potentialRecipeIDs.append(idnum)
-                potRecIngredientRatio.append(idnum:{"total":ingredientNames.size,"present":0,"ratio":0})
+                potRecIngredientRatio[idnum]={"total":ingredientNames.size,"present":0,"ratio":0}
         for ingredient in ingredientsCursor:
             if ingredient["name"] in ingredientNames:
                 if idnum not in potentialRecipeIDs:
                     potentialRecipeIDs.append(idnum)
-                    potRecIngredientRatio.append(idnum:{"total":ingredientNames.size,"present":1,"ratio":0})
+                    potRecIngredientRatio[idnum]={"total":ingredientNames.size,"present":1,"ratio":0}
                     potRecIngredientRatio[idnum]["ratio"] = potRecIngredientRatio[idnum]["present"]/potRecIngredientRatio[idnum]["total"]
                 else:
                     potRecIngredientRatio[idnum]["present"] = potRecIngredientRatio[idnum]["present"]+1
@@ -61,15 +69,15 @@ def filter(sortBy,timeCook,totalTime,prepTime,ready,ingredientsUsed,haveSome):
         totalPrice = 0.0
         for ingredient in recipeList[n]["ingredients"]:
             if ingredient["name"] not in ingredientsIHave.keys():
-                totalprice += ingredient["price"]*ingredient["quantity"]
+                totalprice += ingredientsList[ingredient["name"]]["price"]*(ingredient["quantity"]-ingredientsList[ingredient["name"]]["quantity"])
         return totalPrice
 
 
 
 
-    if (sortBy == "alpha")
+    if (sortBy == "alpha"):
         potentialRecipeIDs.sort(key=sortAlpha)
-    else if (sortBy == "price")
+    elif (sortBy == "price"):
         potentialRecipeIDs.sort(key=sortPrice)
     else:
         potentialRecipeIDs.sort(key=sortPercent)
