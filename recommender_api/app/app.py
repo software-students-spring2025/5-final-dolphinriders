@@ -1,14 +1,8 @@
+# recommender_api/app/app.py
 
-from flask import Flask, request, jsonify, abort
 import os
-
-from app.db import (
-    get_recipes, 
-    get_recipe_by_id, 
-    get_ingredients, 
-    get_user_ingredients,
-    update_user_ingredients
-)
+from flask import Flask, request, jsonify, abort
+import app.db as db
 from app.models import RecipeFilterParams
 from app.recommend import filter
 
@@ -18,7 +12,7 @@ app = Flask(__name__, static_folder='static')
 def root():
     return jsonify({"message": "Welcome to the Recipe Recommender API"})
 
-@app.route('/recipes', methods=['GET'])
+@app.route('/recipes', methods=["GET"])
 def get_all_recipes():
     sort_by = request.args.get('sortBy', 'percent')
     time_cook = int(request.args.get('timeCook', 0))
@@ -28,13 +22,13 @@ def get_all_recipes():
     ingredients_used = request.args.getlist('ingredientsUsed')
     have_some = request.args.get('haveSome', 'true').lower() == 'true'
     user_id = request.args.get('user_id')
-    
+
     user_ingredients = []
     if user_id:
-        user_data = get_user_ingredients(user_id)
+        user_data = db.get_user_ingredients(user_id)
         if user_data:
             user_ingredients = user_data.get("ingredients", [])
-    
+
     params = RecipeFilterParams(
         sortBy=sort_by,
         timeCook=time_cook,
@@ -44,55 +38,55 @@ def get_all_recipes():
         ingredientsUsed=ingredients_used,
         haveSome=have_some
     )
-    
+
     recipes = filter(params, user_ingredients)
     return jsonify(recipes)
 
-@app.route('/recipes/<recipe_id>', methods=['GET'])
+@app.route('/recipes/<recipe_id>', methods=["GET"])
 def get_recipe(recipe_id):
-    recipe = get_recipe_by_id(recipe_id)
+    recipe = db.get_recipe_by_id(recipe_id)
     if not recipe:
         abort(404, description="Recipe not found")
     return jsonify(recipe)
 
-@app.route('/ingredients', methods=['GET'])
+@app.route('/ingredients', methods=["GET"])
 def get_all_ingredients():
-    ingredients = get_ingredients()
+    ingredients = db.get_ingredients()
     return jsonify(ingredients)
 
-@app.route('/user/<user_id>/ingredients', methods=['GET'])
+@app.route('/user/<user_id>/ingredients', methods=["GET"])
 def get_user_available_ingredients(user_id):
-    user_data = get_user_ingredients(user_id)
+    user_data = db.get_user_ingredients(user_id)
     if not user_data:
         abort(404, description="User not found")
     return jsonify(user_data)
 
-@app.route('/user/<user_id>/ingredients', methods=['PUT'])
+@app.route('/user/<user_id>/ingredients', methods=["PUT"])
 def update_user_available_ingredients(user_id):
     ingredients = request.json
     if not isinstance(ingredients, list):
         abort(400, description="Expected a list of ingredients")
-    
-    success = update_user_ingredients(user_id, ingredients)
+
+    success = db.update_user_ingredients(user_id, ingredients)
     if not success:
         abort(500, description="Failed to update ingredients")
-    
+
     return jsonify({"user_id": user_id, "ingredients": ingredients})
 
-@app.route('/recipe/<recipe_id>/shopping-list', methods=['GET'])
+@app.route('/recipe/<recipe_id>/shopping-list', methods=["GET"])
 def generate_shopping_list(recipe_id):
     user_id = request.args.get('user_id')
-    
-    recipe = get_recipe_by_id(recipe_id)
+
+    recipe = db.get_recipe_by_id(recipe_id)
     if not recipe:
         abort(404, description="Recipe not found")
-    
+
     user_ingredients = []
     if user_id:
-        user_data = get_user_ingredients(user_id)
+        user_data = db.get_user_ingredients(user_id)
         if user_data:
             user_ingredients = user_data.get("ingredients", [])
-    
+
     missing_ingredients = []
     for ingredient in recipe["ingredients"]:
         if ingredient["name"] not in user_ingredients:
@@ -102,7 +96,7 @@ def generate_shopping_list(recipe_id):
                 "unit": ingredient.get("unit"),
                 "estimated_price": None
             })
-    
+
     return jsonify({
         "recipe_id": recipe_id,
         "recipe_name": recipe["name"],
