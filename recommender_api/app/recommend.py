@@ -1,90 +1,69 @@
-from app.db import recipe_collection, ingredients_collection, get_recipes, get_ingredients
+# recommender_api/app/recommend.py
+
+from app.db import get_recipes, get_ingredients
 from app.models import RecipeFilterParams
 
-def filter(params,user_ingredients):
-    sortBy = params.sortBy
-    timeCook=params.timeCook
-    totalTime=params.totalTime
-    prepTime=params.prepTime
-    ready=params.ready
-    ingredientsUsed=params.ingredientsUsed
-    haveSome=params.haveSome # unpack params
+def filter(params: RecipeFilterParams, user_ingredients: list[str]) -> list[str]:
+    """
+    Return a list of recipe IDs matching the filter params and
+    sorted according to params.sortBy (
+      'percent' (default), 'alpha', or 'price' ).
+    """
+    # 1) Unpack filter params
+    sortBy        = params.sortBy
+    timeCook      = params.timeCook
+    totalTime     = params.totalTime
+    prepTime      = params.prepTime
+    ingredientsUsed = params.ingredientsUsed
+    haveSome      = params.haveSome
 
-    ingredientsCursor = ingredients_collection.find() # .find returns a cursor of all items
-    ingredientsList = [x for x in ingredients_collection.find()] # iterate through cursor to get all ingredients
-    ingredientsIHave = user_ingredients # same but for ingredients we have some of
-    ingredientsCursor = ingredients_collection.find()
-    recipeCursor = recipe_collection.get()
-    recipeList = {x._id:{name:x.name,ingredients:x.ingredients,instructions:x.instructions,cookTime:x.cooktime,prepTime:x.prepTime,totalTime:x.totalTime} for x in recipeCursor}
-    recipeCursor = recipe_collection.get()
-    potentialRecipeIDs = []
-    potRecIngredientRatio = {} # structure is _id:{"total":0,"present":0,"ratio":0}
+    # 2) Fetch all data
+    recipes    = get_recipes()     # list of dicts, each with '_id', 'name', 'ingredients', etc.
+    ingredients = get_ingredients()  # list of dicts, each with 'name', maybe 'price_per_unit', etc.
 
-    # DONE add filtering for *specific ingredients*, cook time
+    # Build lookups
+    recipe_map = { r["_id"]: r for r in recipes }
+    user_set   = set(user_ingredients or [])
 
-    # TODO add price finding feature
+    # 3) Filter & score
+    pot_ratio = {}   # recipe_id -> match ratio
+    candidates = []
 
-    # DONE mod filter to inclode 0% recipes
-    for idnum,recipe in recipeList.items:
-        ingredientNames = []
-        for ingredient in recipe["ingredients"]:
-            ingredientNames.append(recipe["ingredients"]["name"])
-            
-        if (haveSome == False):
-                potentialRecipeIDs.append(idnum)
-                potRecIngredientRatio[idnum]={"total":ingredientNames.size,"present":0,"ratio":0}
-        for ingredient in ingredientsCursor:
-            if ingredient["name"] in ingredientNames:
-                if idnum not in potentialRecipeIDs:
-                    potentialRecipeIDs.append(idnum)
-                    potRecIngredientRatio[idnum]={"total":ingredientNames.size,"present":1,"ratio":0}
-                    potRecIngredientRatio[idnum]["ratio"] = potRecIngredientRatio[idnum]["present"]/potRecIngredientRatio[idnum]["total"]
-                else:
-                    potRecIngredientRatio[idnum]["present"] = potRecIngredientRatio[idnum]["present"]+1
-                    potRecIngredientRatio[idnum]["ratio"] = potRecIngredientRatio[idnum]["present"]/potRecIngredientRatio[idnum]["total"]
-        if (ingredientsUsed != []):
-            allow = False
-            for ingredient in ingredientsUsed:
-                if ingredient in ingredientNames:
-                    allow = True
-            if (allow == False):
-                potentialRecipeIDs.remove(idnum)
-        if (timeCook>0):
-            if (recipe["cookTime"]>timeCook):
-                potentialRecipeIDs.remove(idnum)
-        if (totalTime>0):
-            if (recipe["cookTime"]>totalTime):
-                potentialRecipeIDs.remove(idnum)
-        if (prepTime>0):
-            if (recipe["cookTime"]>prepTime):
-                potentialRecipeIDs.remove(idnum)
+    for rid, recipe in recipe_map.items():
+        names = [ing["name"] for ing in recipe.get("ingredients", [])]
 
+        # a) ingredientsUsed filter: require at least one
+        if ingredientsUsed:
+            if not any(i in names for i in ingredientsUsed):
+                continue
 
-    # potentialRecipeIDs now full of all recipes with at least one present ingredient, and potRecIngredientRatio is a dict of dicts in correct format
-    def sortAlpha(n):
-        return recipeList[n]["name"]
-    def sortPercent(n):
-        return potRecIngredientRatio[n]["ratio"]
-    def sortPrice(n):
-        totalPrice = 0.0
-        for ingredient in recipeList[n]["ingredients"]:
-            if ingredient["name"] not in ingredientsIHave.keys():
-                totalprice += ingredientsList[ingredient["name"]]["price"]*(ingredient["quantity"]-ingredientsList[ingredient["name"]]["quantity"])
-        return totalPrice
+        # b) time filters
+        if timeCook and recipe.get("cookTime", 0) > timeCook:
+            continue
+        if totalTime and recipe.get("totalTime", 0) > totalTime:
+            continue
+        if prepTime and recipe.get("prepTime", 0) > prepTime:
+            continue
 
+        # c) compute ingredient‐match ratio
+        if haveSome:
+            present = sum(1 for n in names if n in user_set)
+        else:
+            present = 0
+        total = len(names)
+        ratio = (present / total) if total > 0 else 0.0
 
+        candidates.append(rid)
+        pot_ratio[rid] = ratio
 
-
-    if (sortBy == "alpha"):
-        potentialRecipeIDs.sort(key=sortAlpha)
-    elif (sortBy == "price"):
-        potentialRecipeIDs.sort(key=sortPrice)
+    # 4) Sort candidates
+    if sortBy == "alpha":
+        candidates.sort(key=lambda rid: recipe_map[rid]["name"])
+    elif sortBy == "price":
+        # Placeholder: price logic not implemented yet → fallback to ratio
+        candidates.sort(key=lambda rid: pot_ratio[rid])
     else:
-        potentialRecipeIDs.sort(key=sortPercent)
+        # 'percent' or anything else → highest match first
+        candidates.sort(key=lambda rid: pot_ratio[rid], reverse=True)
 
-    # DONE sort dict
-    # DONE: sort by price, alphabetical, percent ingredients
-
-    # this code was written by a human goddamn being with a soul and thoughts.
-
-    return potentialRecipeIDs
+    return candidates

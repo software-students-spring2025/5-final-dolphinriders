@@ -1,0 +1,19 @@
+[
+    {
+      "name": "Quick Pancakes",
+      "ingredients": [
+        { "name": "flour",         "quantity": 1, "unit": "cup" },
+        { "name": "milk",          "quantity": 1, "unit": "cup" },
+        { "name": "egg",           "quantity": 1, "unit": "each" }
+      ],
+      "instructions": [
+        "Mix all ingredients into a batter.",
+        "Pour batter onto a hot griddle.",
+        "Flip when bubbles form, then serve."
+      ],
+      "cookTime": 5,
+      "prepTime": 5,
+      "totalTime": 10
+    }
+  ]
+  
