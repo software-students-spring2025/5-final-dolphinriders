@@ -1,0 +1,8 @@
+[
+    {
+      "name": "Simple Salad",
+      "ingredients": [{"name":"lettuce","quantity":1,"unit":"head"}],
+      "instructions": ["Chop lettuce", "Toss in bowl"],
+      "cookTime": 0, "prepTime":5, "totalTime":5
+    }
+  ]

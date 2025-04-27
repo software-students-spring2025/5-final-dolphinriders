@@ -1,0 +1,39 @@
+/* recommender_api/app/static/styles.css */
+
+body {
+    font-family: sans-serif;
+    margin: 2rem;
+    background: #fafafa;
+    color: #333;
+  }
+  
+  header h1 {
+    margin-bottom: 1rem;
+  }
+  
+  #filters {
+    margin-bottom: 1.5rem;
+  }
+  
+  #recipe-list button {
+    display: block;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+  }
+  
+  #recipe-list button:hover {
+    background: #f0f0f0;
+  }
+  
+  #recipe-detail h2 {
+    margin-top: 0;
+  }
+  
+  #recipe-detail ul,
+  #recipe-detail ol {
+    margin-left: 1.5rem;
+  }
+  

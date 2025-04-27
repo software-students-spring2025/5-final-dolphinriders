@@ -10,7 +10,7 @@ app = Flask(__name__, static_folder='static')
 
 @app.route('/')
 def root():
-    return jsonify({"message": "Welcome to the Recipe Recommender API"})
+    return app.send_static_file('index.html')
 
 @app.route('/recipes', methods=["GET"])
 def get_all_recipes():
