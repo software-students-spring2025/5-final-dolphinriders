@@ -41,6 +41,12 @@ def get_all_recipes():
 
     recipes = filter(params, user_ingredients)
     return jsonify(recipes)
+    return jsonify([
+
+        { "id": "1", "name": "Test Pancakes" },
+        { "id": "2", "name": "Test Salad" }
+
+        ])
 
 @app.route('/recipes/<recipe_id>', methods=["GET"])
 def get_recipe(recipe_id):

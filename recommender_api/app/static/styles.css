@@ -1,39 +1,221 @@
 /* recommender_api/app/static/styles.css */
 
-body {
-    font-family: sans-serif;
-    margin: 2rem;
-    background: #fafafa;
-    color: #333;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
   }
   
-  header h1 {
+  body {
+    font-family: sans-serif;
+    background: #f4f6f8;
+    color: #1a1a1a;
+  }
+  
+  .site-header {
+    text-align: center;
+    padding: 1.5rem 0;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  
+  .tabs {
+    display: flex;
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
     margin-bottom: 1rem;
   }
   
-  #filters {
-    margin-bottom: 1.5rem;
+  .tab {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    background: #f9f9f9;
+    cursor: pointer;
+    font-weight: bold;
   }
   
-  #recipe-list button {
-    display: block;
-    margin: 0.5rem 0;
+  .tab.active {
+    background: #fff;
+    border-bottom: 3px solid #28a745;
+  }
+  
+  .filter-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .filter-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .subhead {
+    color: #555;
+    margin-bottom: 1rem;
+  }
+  
+  .filter-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem 2rem;
+  }
+  
+  .field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .field.span-3 {
+    grid-column: span 3;
+  }
+  
+  .field label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .slider-field {
+    display: flex;
+    align-items: center;
+  }
+  
+  .slider-field span {
+    width: 3rem;
+  }
+  
+  input[type="range"] {
+    flex: 1;
+    margin-left: 0.5rem;
+  }
+  
+  /* Toggle Switch */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+  }
+  
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 24px;
+    margin-right: 0.75rem;
+  }
+  
+  .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .toggle-switch .slider {
+    position: absolute;
+    cursor: pointer;
+    background-color: #ccc;
+    border-radius: 24px;
+    top: 0; left: 0;
+    right: 0; bottom: 0;
+    transition: 0.2s;
+  }
+  
+  .toggle-switch .slider:before {
+    position: absolute;
+    content: "";
+    height: 20px; width: 20px;
+    left: 2px; bottom: 2px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.2s;
+  }
+  
+  .toggle-switch input:checked + .slider {
+    background-color: #28a745;
+  }
+  
+  .toggle-switch input:checked + .slider:before {
+    transform: translateX(24px);
+  }
+  
+  /* Ingredient tag list */
+  .ingredient-field {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .ingredient-field input {
+    flex: 1;
     padding: 0.5rem;
     border: 1px solid #ccc;
-    background: #fff;
+    border-radius: 4px;
+  }
+  
+  .btn {
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
     cursor: pointer;
   }
   
-  #recipe-list button:hover {
-    background: #f0f0f0;
+  .btn.add {
+    background: #28a745;
+    color: white;
+    padding: 0 1rem;
   }
   
-  #recipe-detail h2 {
-    margin-top: 0;
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
   
-  #recipe-detail ul,
-  #recipe-detail ol {
-    margin-left: 1.5rem;
+  .tag {
+    background: #e0f4ea;
+    color: #066c38;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+  }
+  
+  /* Action buttons */
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+  
+  .btn.outline {
+    background: white;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 0.5rem 1rem;
+  }
+  
+  .btn.primary {
+    background: #28a745;
+    color: white;
+    padding: 0.5rem 1.5rem;
+  }
+  
+  /* Recipe list & detail */
+  .list, .detail {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    padding: 1rem;
+    margin-bottom: 1.5rem;
   }
   
