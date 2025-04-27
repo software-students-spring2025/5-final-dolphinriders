@@ -1,0 +1,33 @@
+<!-- grocery-service/app/templates/shopping_list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping List</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Shopping List for {{ shopping_list.recipe_name }}</h1>
+        
+        <div class="shopping-list">
+            <h2>Missing Ingredients:</h2>
+            <ul>
+                {% for item in shopping_list.missing_ingredients %}
+                <li>
+                    {{ item.quantity }} {{ item.unit }} {{ item.ingredient }}
+                    {% if item.estimated_price %}
+                    - ${{ "%.2f"|format(item.estimated_price) }}
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            
+            {% if shopping_list.total_estimated_price %}
+            <h3>Total Estimated Cost: ${{ "%.2f"|format(shopping_list.total_estimated_price) }}</h3>
+            {% endif %}
+            
+            <a href="/?user_id={{ user_id }}">Back to recipes</a>
+        </div>
+    </div>
+</body>
+</html>
