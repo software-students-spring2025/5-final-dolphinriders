@@ -15,9 +15,8 @@ services:
 
     # health checking
     health_check:
-      path: /
+      http_path: /
       port: 5000
-      interval_seconds: 10
       timeout_seconds: 5
 
     instance_count: 1
