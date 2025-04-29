@@ -8,7 +8,8 @@ os.environ["DB_NAME"] = "test_db"
 import pytest
 from app.app import create_app
 import app.db as db_module
-import app.recommend as recommend_module  # for patching the recommend.filter function
+import app.recommend as recommend_module  # for patching the filter function
+import app.app as app_module  # for route registration
 
 @pytest.fixture
 def client():
@@ -20,7 +21,7 @@ def client():
 
 def test_get_all_recipes_default_no_user(monkeypatch, client):
     dummy = [{"id": "1", "name": "Test Pancakes"}]
-    # patch the filter function in app.recommend
+    # patch the filter function that the route uses
     monkeypatch.setattr(recommend_module, 'filter', lambda params, user_ing: dummy)
     resp = client.get('/recipes')
     assert resp.status_code == 200
@@ -41,7 +42,6 @@ def test_get_recipe_not_found(monkeypatch, client):
     monkeypatch.setattr(db_module, 'get_recipe_by_id', lambda rid: None)
     resp = client.get('/recipes/999')
     assert resp.status_code == 404
-    # since app returns HTML on abort, check raw body
     assert b"Recipe not found" in resp.data
 
 # ---- GET /ingredients ----
@@ -114,5 +114,4 @@ def test_generate_shopping_list_recipe_not_found(monkeypatch, client):
     monkeypatch.setattr(db_module, 'get_recipe_by_id', lambda rid: None)
     resp = client.get('/recipe/xxx/shopping-list')
     assert resp.status_code == 404
-    # HTML error page includes “Recipe not found”
     assert b"Recipe not found" in resp.data
