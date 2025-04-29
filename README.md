@@ -20,6 +20,7 @@ A two‑service system that suggests recipes based on what you have on hand, the
 ## Testing 
 
 ```bash
+# Run recommender-api tests
 cd recommender_api
 python3 -m venv .venv
 source .venv/bin/activate 
