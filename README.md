@@ -16,6 +16,16 @@ A two‑service system that suggests recipes based on what you have on hand, the
 - [Nawab Mahmood](https://github.com/NawabMahmood)  
 - [Willow McKinnis](https://github.com/Willow-Zero) 
 
+## Setup Instructions
+### 1. Clone the repository
+```bash
+git clone https://github.com/yourusername/smart-recipe-recommender.git
+cd smart-recipe-recommender
+
+### 3. Build & start all services
+docker compose up --build
+
+
 ## Testing 
 Make sure you’ve got your venv active and all dependencies installed:
 ```bash
