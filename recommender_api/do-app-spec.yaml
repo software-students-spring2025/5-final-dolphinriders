@@ -1,0 +1,26 @@
+name: recommender-api
+region: nyc1
+
+services:
+  - name: web
+    image:
+      registry_type: DOCKER_HUB
+      repository: your-dockerhub-username/recommender_api
+      tag: latest
+    run_command: python -m app.app
+    envs:
+      - key: MONGO_URI
+        value: "${MONGO_URI}"
+      - key: DB_NAME
+        value: "${DB_NAME}"
+    routes:
+      - path: /
+    health_check:
+      protocol: HTTP
+      http_path: /health
+      check_interval_seconds: 10
+      response_timeout_seconds: 3
+      healthy_threshold: 1
+      unhealthy_threshold: 2
+    instance_count: 1
+    instance_size_slug: professional-xs
