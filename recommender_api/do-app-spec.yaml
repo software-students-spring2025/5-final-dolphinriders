@@ -10,6 +10,9 @@ services:
       registry: docker.io
       repository: jennifer1119/recommender_api
       tag: latest
+    credentials:
+      username: "${{ secrets.DOCKERHUB_USERNAME }}"
+      password: "${{ secrets.DOCKERHUB_PASSWORD }}"
 
     # expose the port your Flask app listens on
     http_port: 5000
