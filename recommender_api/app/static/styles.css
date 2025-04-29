@@ -1,6 +1,12 @@
 /* recommender_api/app/static/styles.css */
 
-* {
+/* Panel switching */
+.hidden {
+    display: none;
+  }
+  
+  /* reuse existing reset and layout */
+  * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -25,6 +31,7 @@
     padding: 0 1rem;
   }
   
+  /* Tabs */
   .tabs {
     display: flex;
     background: #fff;
@@ -45,6 +52,11 @@
   .tab.active {
     background: #fff;
     border-bottom: 3px solid #28a745;
+  }
+  
+  /* Filter & Pantry Panels share card styles */
+  .panel {
+    margin-bottom: 2rem;
   }
   
   .filter-card {
@@ -148,7 +160,7 @@
     transform: translateX(24px);
   }
   
-  /* Ingredient tag list */
+  /* Ingredient field & tags */
   .ingredient-field {
     display: flex;
     gap: 0.5rem;

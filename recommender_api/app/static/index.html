@@ -11,84 +11,105 @@
   </header>
 
   <main class="container">
+    <!-- Tabs -->
     <div class="tabs">
-      <button class="tab active">Recipes</button>
-      <button class="tab">My Ingredients</button>
+      <button class="tab active" data-panel="recipes">Recipes</button>
+      <button class="tab"        data-panel="pantry">My Ingredients</button>
     </div>
 
-    <section class="filter-card">
-      <h2>Recipe Filters</h2>
-      <p class="subhead">Customize your recipe search</p>
+    <!-- Recipes Panel -->
+    <section id="panel-recipes" class="panel">
+      <section class="filter-card">
+        <h2>Recipe Filters</h2>
+        <p class="subhead">Customize your recipe search</p>
 
-      <div class="filter-grid">
-        <!-- Sort By -->
-        <div class="field">
-          <label for="sortBy">Sort By</label>
-          <select id="sortBy">
-            <option value="percent">Ingredient Match %</option>
-            <option value="alpha">Alphabetical</option>
-            <option value="price">Price</option>
-          </select>
-        </div>
+        <div class="filter-grid">
+          <!-- Sort By -->
+          <div class="field">
+            <label for="sortBy">Sort By</label>
+            <select id="sortBy">
+              <option value="percent">Ingredient Match %</option>
+              <option value="alpha">Alphabetical</option>
+              <option value="price">Price</option>
+            </select>
+          </div>
 
-        <!-- Cook Time Slider -->
-        <div class="field">
-          <label>Cook Time (max minutes)</label>
-          <div class="slider-field">
-            <span id="cookTimeValue">Any</span>
-            <input type="range" id="cookTime" min="0" max="120" value="0" />
+          <!-- Cook Time Slider -->
+          <div class="field">
+            <label>Cook Time (max minutes)</label>
+            <div class="slider-field">
+              <span id="cookTimeValue">Any</span>
+              <input type="range" id="cookTime" min="0" max="120" value="0" />
+            </div>
+          </div>
+
+          <!-- Prep Time Slider -->
+          <div class="field">
+            <label>Prep Time (max minutes)</label>
+            <div class="slider-field">
+              <span id="prepTimeValue">Any</span>
+              <input type="range" id="prepTime" min="0" max="60" value="0" />
+            </div>
+          </div>
+
+          <!-- Total Time Slider -->
+          <div class="field span-3">
+            <label>Total Time (max minutes)</label>
+            <div class="slider-field">
+              <span id="totalTimeValue">Any</span>
+              <input type="range" id="totalTime" min="0" max="180" value="0" />
+            </div>
           </div>
         </div>
 
-        <!-- Prep Time Slider -->
-        <div class="field">
-          <label>Prep Time (max minutes)</label>
-          <div class="slider-field">
-            <span id="prepTimeValue">Any</span>
-            <input type="range" id="prepTime" min="0" max="60" value="0" />
-          </div>
+        <!-- Toggle -->
+        <div class="toggle-row">
+          <label class="toggle-switch">
+            <input type="checkbox" id="haveSome" checked />
+            <span class="slider"></span>
+          </label>
+          <span>Only show recipes with some ingredients I have</span>
         </div>
 
-        <!-- Total Time Slider -->
-        <div class="field span-3">
-          <label>Total Time (max minutes)</label>
-          <div class="slider-field">
-            <span id="totalTimeValue">Any</span>
-            <input type="range" id="totalTime" min="0" max="180" value="0" />
-          </div>
+        <!-- Ingredient search + Add -->
+        <div class="ingredient-field">
+          <input
+            type="text"
+            id="ingredientsUsed"
+            placeholder="Type to search ingredients"
+          />
+          <button id="addIngredient" class="btn add">Add</button>
         </div>
-      </div>
+        <div id="tagList" class="tag-list"></div>
 
-      <!-- Toggle -->
-      <div class="toggle-row">
-        <label class="toggle-switch">
-          <input type="checkbox" id="haveSome" checked />
-          <span class="slider"></span>
-        </label>
-        <span>Only show recipes with some ingredients I have</span>
-      </div>
+        <!-- Actions -->
+        <div class="actions">
+          <button id="resetFilters" class="btn outline">Reset</button>
+          <button id="applyFilters" class="btn primary">Apply Filters</button>
+        </div>
+      </section>
 
-      <!-- Ingredient search + Add -->
+      <section id="recipe-list" class="list">Loading recipes…</section>
+      <section id="recipe-detail" class="detail">
+        Click a recipe above to see details.
+      </section>
+    </section>
+
+    <!-- Pantry Panel -->
+    <section id="panel-pantry" class="panel hidden">
+      <h2>My Ingredients</h2>
       <div class="ingredient-field">
         <input
           type="text"
-          id="ingredientsUsed"
-          placeholder="Type to search ingredients"
+          id="pantryInput"
+          placeholder="Add an ingredient"
         />
-        <button id="addIngredient" class="btn add">Add</button>
+        <button id="pantryAdd" class="btn add">Add</button>
       </div>
-      <div id="tagList" class="tag-list"></div>
-
-      <!-- Actions -->
+      <div id="pantryList" class="tag-list"></div>
       <div class="actions">
-        <button id="resetFilters" class="btn outline">Reset</button>
-        <button id="applyFilters" class="btn primary">Apply Filters</button>
+        <button id="pantrySave" class="btn primary">Save Pantry</button>
       </div>
-    </section>
-
-    <section id="recipe-list" class="list">Loading recipes…</section>
-    <section id="recipe-detail" class="detail">
-      Click a recipe above to see details.
     </section>
   </main>
 
