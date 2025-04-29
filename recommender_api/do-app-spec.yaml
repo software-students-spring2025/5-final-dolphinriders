@@ -6,6 +6,7 @@ services:
   - name: api
     # use your Docker Hub image
     image:
+      registry_type: DOCKER_HUB
       registry: docker.io
       repository: your-dockerhub-username/recommender_api
       tag: latest
