@@ -7,7 +7,6 @@ An exercise to put to practice software development teamwork, subsystem communic
 A two‑service system that suggests recipes based on what you have on hand, then generates an optimized shopping list for missing ingredients.
 
 - **Recipe Recommender** (Flask & MongoDB)  
-- **Grocery Optimizer** (Flask)  
 - Containerized with Docker, automated with GitHub Actions, deployed to DigitalOcean App Platform  
 
 ## Team
