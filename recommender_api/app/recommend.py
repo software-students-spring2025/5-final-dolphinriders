@@ -1,9 +1,10 @@
 # recommender_api/app/recommend.py
 
+from typing import List
 from app.db import get_recipes, get_ingredients
 from app.models import RecipeFilterParams
 
-def filter(params: RecipeFilterParams, user_ingredients: list[str]) -> list[str]:
+def filter(params: RecipeFilterParams, user_ingredients: List[str]) -> List[str]:
     """
     Return a list of recipe IDs matching the filter params and
     sorted according to params.sortBy (
