@@ -1,19 +1,53 @@
 [
-    {
-      "name": "Quick Pancakes",
-      "ingredients": [
-        { "name": "flour",         "quantity": 1, "unit": "cup" },
-        { "name": "milk",          "quantity": 1, "unit": "cup" },
-        { "name": "egg",           "quantity": 1, "unit": "each" }
-      ],
-      "instructions": [
-        "Mix all ingredients into a batter.",
-        "Pour batter onto a hot griddle.",
-        "Flip when bubbles form, then serve."
-      ],
-      "cookTime": 5,
-      "prepTime": 5,
-      "totalTime": 10
-    }
-  ]
+  {
+    "name": "Classic Pancakes",
+    "ingredients": [
+      { "name": "flour", "quantity": 200, "unit": "g" },
+      { "name": "egg",   "quantity": 2,   "unit": "pcs" },
+      { "name": "milk",  "quantity": 300, "unit": "ml" }
+    ],
+    "steps": [
+      "Mix flour, egg and milk into a smooth batter.",
+      "Heat a non-stick pan and pour 1/4 cup batter.",
+      "Cook until bubbles form, flip and cook other side."
+    ],
+    "tags": ["vegetarian", "breakfast"],
+    "cookTime": 10,
+    "prepTime": 5,
+    "totalTime": 15
+  },
+  {
+    "name": "Tomato Omelette",
+    "ingredients": [
+      { "name": "egg",    "quantity": 3, "unit": "pcs" },
+      { "name": "tomato", "quantity": 1, "unit": "large" },
+      { "name": "salt",   "quantity": 1, "unit": "tsp" }
+    ],
+    "steps": [
+      "Beat eggs with salt.",
+      "Pour into hot pan, scatter chopped tomato.",
+      "Cook until set, fold and serve."
+    ],
+    "tags": ["gluten_free"],
+    "cookTime": 5,
+    "prepTime": 5,
+    "totalTime": 10
+  },
+  {
+    "name": "Quick Pancakes",
+    "ingredients": [
+      { "name": "flour", "quantity": 1, "unit": "cup" },
+      { "name": "milk",  "quantity": 1, "unit": "cup" },
+      { "name": "egg",   "quantity": 1, "unit": "each" }
+    ],
+    "steps": [
+      "Mix all ingredients into a batter.",
+      "Pour batter onto a hot griddle.",
+      "Flip when bubbles form, then serve."
+    ],
+    "cookTime": 5,
+    "prepTime": 5,
+    "totalTime": 10
+  }
+]
   
