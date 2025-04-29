@@ -24,6 +24,7 @@ cd smart-recipe-recommender
 
 ### 3. Build & start all services
 docker compose up --build
+```
 
 
 ## Testing 
@@ -39,4 +40,5 @@ python -m pytest tests/ \
   --cov=app \
   --cov-report=term-missing \
   --cov-fail-under=80
+```
 
