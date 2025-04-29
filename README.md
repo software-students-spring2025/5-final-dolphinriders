@@ -21,8 +21,10 @@ A two‑service system that suggests recipes based on what you have on hand, the
 ```bash
 git clone https://github.com/yourusername/smart-recipe-recommender.git
 cd smart-recipe-recommender
+```
 
 ### 3. Build & start all services
+```bash 
 docker compose up --build
 ```
 
