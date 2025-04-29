@@ -19,8 +19,7 @@ A two‑service system that suggests recipes based on what you have on hand, the
 ## Setup Instructions
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/smart-recipe-recommender.git
-cd smart-recipe-recommender
+git clone 
 ```
 
 ### 3. Build & start all services
