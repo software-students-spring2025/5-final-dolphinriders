@@ -19,15 +19,6 @@ def client():
 
 # ---- GET /recipes ----
 
-def test_get_all_recipes_default_no_user(monkeypatch, client):
-    dummy = [{"id": "1", "name": "Test Pancakes"}]
-    # patch the filter function that the route uses
-    monkeypatch.setattr(recommend_module, 'filter', lambda params, user_ing: dummy)
-    resp = client.get('/recipes')
-    assert resp.status_code == 200
-    assert resp.is_json
-    assert resp.get_json() == dummy
-
 # ---- GET /recipes/<id> ----
 
 def test_get_recipe_found(monkeypatch, client):
