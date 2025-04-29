@@ -1,24 +1,20 @@
-# recommender_api/do-app-spec.yaml
 name: recommender-api
 region: nyc1
 
 services:
   - name: api
-    # use your Docker Hub image
     image:
       registry_type: DOCKER_HUB
-      registry: jennifer1119            # your Docker Hub username/org
-      repository: recommender_api       # the repo name (no username prefix)
+      registry: jennifer1119
+      repository: recommender_api
       tag: latest
       registry_credentials: "jennifer1119:dckr_pat_fxy]1ciZNwAyiLPzXCHZy8hFWuE"
 
-    # expose the port your Flask app listens on
-    http_port: 5000
+    http_port: 3000
 
-    # health checking
     health_check:
-      http_path: "/health" 
-      port: 5000
+      http_path: "/health"
+      port: 3000
       timeout_seconds: 5
 
     instance_count: 1
@@ -26,6 +22,8 @@ services:
 
     envs:
       - key: MONGO_URI
-        value: "mongodb+srv://doadmin:YOUR_REAL_PASSWORD@db-mongodb-nyc3-51746-9f87e3be.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=db-mongodb-nyc3-51746"
+        value: "mongodb+srv://mxa5251:MRFeyxhj3jEnXdI4@recipe-recommender.rk0ehq4.mongodb.net/"
       - key: DB_NAME
         value: "recipes"
+      - key: PORT
+        value: "3000"
