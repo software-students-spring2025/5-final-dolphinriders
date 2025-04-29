@@ -8,7 +8,7 @@ os.environ["DB_NAME"] = "test_db"
 import pytest
 from app.app import create_app
 import app.db as db_module
-import app.app as app_module  # for patching the route‐bound filter
+import app.recommend as recommend_module  # for patching the recommend.filter function
 
 @pytest.fixture
 def client():
@@ -20,8 +20,8 @@ def client():
 
 def test_get_all_recipes_default_no_user(monkeypatch, client):
     dummy = [{"id": "1", "name": "Test Pancakes"}]
-    # patch the filter that app.app actually uses
-    monkeypatch.setattr(app_module, 'filter', lambda params, user_ing: dummy)
+    # patch the filter function in app.recommend
+    monkeypatch.setattr(recommend_module, 'filter', lambda params, user_ing: dummy)
     resp = client.get('/recipes')
     assert resp.status_code == 200
     assert resp.is_json
@@ -35,6 +35,7 @@ def test_get_recipe_found(monkeypatch, client):
     resp = client.get('/recipes/42')
     assert resp.status_code == 200
     assert resp.get_json() == recipe
+
 
 def test_get_recipe_not_found(monkeypatch, client):
     monkeypatch.setattr(db_module, 'get_recipe_by_id', lambda rid: None)
@@ -61,6 +62,7 @@ def test_get_user_ingredients_found(monkeypatch, client):
     assert resp.status_code == 200
     assert resp.get_json() == user_data
 
+
 def test_get_user_ingredients_not_found(monkeypatch, client):
     monkeypatch.setattr(db_module, 'get_user_ingredients', lambda uid: None)
     resp = client.get('/user/u2/ingredients')
@@ -76,10 +78,12 @@ def test_update_user_ingredients_success(monkeypatch, client):
     assert resp.status_code == 200
     assert resp.get_json() == {"user_id": "u3", "ingredients": new_list}
 
+
 def test_update_user_ingredients_bad_payload(client):
     resp = client.put('/user/u3/ingredients', json={"foo": "bar"})
     assert resp.status_code == 400
     assert b"Expected a list of ingredients" in resp.data
+
 
 def test_update_user_ingredients_failure(monkeypatch, client):
     monkeypatch.setattr(db_module, 'update_user_ingredients', lambda uid, lst: False)
@@ -104,6 +108,7 @@ def test_generate_shopping_list_success(monkeypatch, client):
     data = resp.get_json()
     assert data['recipe_id'] == 'r1'
     assert any(item['ingredient'] == 'flour' for item in data['missing_ingredients'])
+
 
 def test_generate_shopping_list_recipe_not_found(monkeypatch, client):
     monkeypatch.setattr(db_module, 'get_recipe_by_id', lambda rid: None)
