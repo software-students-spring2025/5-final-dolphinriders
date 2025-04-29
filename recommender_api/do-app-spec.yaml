@@ -3,39 +3,28 @@ name: recommender-api
 region: nyc1
 
 services:
-  - name: web
+  - name: api
+    # use your Docker Hub image
     image:
-      registry_type: DOCKER_HUB
+      registry: docker.io
       repository: your-dockerhub-username/recommender_api
       tag: latest
 
-    # The HTTP port your Flask app listens on
+    # expose the port your Flask app listens on
     http_port: 5000
 
-    # How to start your app inside the container
-    run_command: python -m app.app
-
-    # Expose routes
-    routes:
-      - path: /
-
-    # Health check against your new /health endpoint
+    # health checking
     health_check:
-      protocol: HTTP
-      http_path: /health
-      initial_delay_seconds: 5
-      period_seconds: 10
-      timeout_seconds: 3
-      healthy_threshold: 1
-      unhealthy_threshold: 2
+      path: /
+      port: 5000
+      interval_seconds: 10
+      timeout_seconds: 5
 
-    # Inject your Mongo connection info from DO secrets / envs
+    instance_count: 1
+    instance_size_slug: basic-xxs
+
     envs:
       - key: MONGO_URI
-        value: "${MONGO_URI}"
+        value: ${MONGO_URI}
       - key: DB_NAME
-        value: "${DB_NAME}"
-
-    # Size & scale
-    instance_count: 1
-    instance_size_slug: professional-xs
+        value: ${DB_NAME}
