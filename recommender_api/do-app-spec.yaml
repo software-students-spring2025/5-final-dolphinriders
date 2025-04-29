@@ -8,7 +8,7 @@ services:
     image:
       registry_type: DOCKER_HUB
       registry: docker.io
-      repository: your-dockerhub-username/recommender_api
+      repository: jennifer1119/recommender_api
       tag: latest
 
     # expose the port your Flask app listens on
