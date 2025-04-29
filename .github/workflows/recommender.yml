@@ -14,7 +14,7 @@ env:
 
 jobs:
   test:
-    name: 🧪 Build & Test
+    name: Build & Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -40,7 +40,7 @@ jobs:
             --cov-fail-under=80
 
   docker:
-    name: 🐳 Build & Push Docker Image
+    name: Build & Push Docker Image
     needs: test
     runs-on: ubuntu-latest
     steps:
