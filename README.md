@@ -1,3 +1,5 @@
+![CI/CD Workflow](https://github.com/software-students-spring2025/5-final-dolhinriders/actions/workflows/recommender.yml/badge.svg) 
+
 # Final Project
 
 An exercise to put to practice software development teamwork, subsystem communication, containers, deployment, and CI/CD pipelines. See [instructions](./instructions.md) for details.
@@ -17,8 +19,8 @@ A two‑service system that suggests recipes based on what you have on hand, the
 - [Willow McKinnis](https://github.com/Willow-Zero) 
 
 ## Container Images 
-Recommender_api: https://hub.docker.com/r/jennifer1119/recommender_api
-Database: 
+Recommender_api: [Docker Hub - Recommender_api](https://hub.docker.com/r/jennifer1119/recommender_api) <br>
+Database: https://hub.docker.com/_/mongo 
 
 
 ## Setup Instructions
@@ -34,7 +36,7 @@ docker compose up --build
 ```
 
 ## Testing 
-Make sure you’ve got your venv active and all dependencies installed:
+Make sure you’ve got your venv active and all dependencies installed:<br>
 macOS / Linux: 
 ```bash
 # Run recommender-api tests

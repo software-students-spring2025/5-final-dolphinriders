@@ -1,6 +1,7 @@
 version: "3.8"
 
 services:
+
   recipe-recommender:
     build: ./recommender_api
     ports:
@@ -13,19 +14,9 @@ services:
       - recipe-network
     restart: unless-stopped
 
-  grocery-optimizer:
-    build: ./grocery_optimizer
-    ports:
-      - "5001:5001"
-    environment:
-      - RECIPE_SERVICE_URL=http://recipe-recommender:3000
-      - MONGO_URI=mongodb+srv://mxa5251:MRFeyxhj3jEnXdI4@recipe-recommender.rk0ehq4.mongodb.net/
-      - DB_NAME=recipe-recommender
-    depends_on:
-      - recipe-recommender
-    networks:
-      - recipe-network
-    restart: unless-stopped
+  mongodb:
+    image: mongo:6.0
+    ports: ["27017:27017"]
 
 networks:
   recipe-network:

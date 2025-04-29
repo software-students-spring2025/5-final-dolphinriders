@@ -8,6 +8,9 @@ from app.recommend import filter
 
 app = Flask(__name__, static_folder='static')
 
+@app.route("/health")
+def health():
+    return jsonify(status="ok"), 200 
 @app.route('/')
 def root():
     return app.send_static_file('index.html')

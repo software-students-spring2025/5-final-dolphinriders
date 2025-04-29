@@ -17,7 +17,7 @@ services:
 
     # health checking
     health_check:
-      http_path: /
+      http_path: "/health" 
       port: 5000
       timeout_seconds: 5
 
