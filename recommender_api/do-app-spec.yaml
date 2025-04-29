@@ -7,12 +7,10 @@ services:
     # use your Docker Hub image
     image:
       registry_type: DOCKER_HUB
-      registry: docker.io
-      repository: jennifer1119/recommender_api
+      registry: jennifer1119            # your Docker Hub username/org
+      repository: recommender_api       # the repo name (no username prefix)
       tag: latest
-    credentials:
-      username: "${{ secrets.DOCKERHUB_USERNAME }}"
-      password: "${{ secrets.DOCKERHUB_PASSWORD }}"
+      registry_credentials: "jennifer1119:dckr_pat_fxy]1ciZNwAyiLPzXCHZy8hFWuE"
 
     # expose the port your Flask app listens on
     http_port: 5000
