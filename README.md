@@ -17,7 +17,7 @@ A two‑service system that suggests recipes based on what you have on hand, the
 - [Willow McKinnis](https://github.com/Willow-Zero) 
 
 ## Testing 
-
+Make sure you’ve got your venv active and all dependencies installed:
 ```bash
 # Run recommender-api tests
 cd recommender_api
