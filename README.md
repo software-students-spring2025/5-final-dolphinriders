@@ -1,4 +1,4 @@
-![CI/CD Workflow](https://github.com/software-students-spring2025/5-final-dolhinriders/actions/workflows/recommender.yml/badge.svg) 
+![CI/CD Workflow](https://github.com/software-students-spring2025/5-final-dolphinriders/actions/workflows/recommender.yml/badge.svg) 
 
 # Final Project
 
