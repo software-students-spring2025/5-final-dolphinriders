@@ -35,6 +35,13 @@ cd 5-final-dolphinriders
 docker compose up --build
 ```
 
+## Environment Configuration
+Create a '.env' file for your secrets/configurations Example:
+```bash 
+MONGO_URI=mongodb://localhost:27017
+FLASK_SECRET_KEY=your_secret_key_here 
+``` 
+
 ## Testing 
 Make sure you’ve got your venv active and all dependencies installed:<br>
 macOS / Linux: 
